@@ -303,6 +303,19 @@ def get_routine_regional_patrol_record_by_month(org: str = setting.org, month: s
     return data
 
 def get_personal_recent_2month_record(user_id = 'U92dd2242c916770f89c413845311bbe2'):
+
+    # 生成豪雨事件開設排除清單
+    sql_string = f"""
+        SELECT datetime_begin::VARCHAR, datetime_end::VARCHAR
+        FROM volunteer.v_rainfall_events
+        WHERE datetime_begin > (CURRENT_DATE - INTERVAL '2 MONTH')
+        ;
+    """
+    data = do_transaction_pg.get_dict_data_from_database(config_db=setting.config_db, sql_string=sql_string)
+    sub_sql = ""
+    for event in data:
+        sub_sql += f"""\nAND NOT (datetime BETWEEN timestamp '{ event["datetime_begin"] }' AND timestamp '{ event["datetime_end"] }')"""
+
     sql_string = f'''
         WITH 
             msgs AS (
@@ -310,6 +323,7 @@ def get_personal_recent_2month_record(user_id = 'U92dd2242c916770f89c413845311bb
                 WHERE msg_type = 'image'
                     AND datetime > CURRENT_DATE - INTERVAL '2 MONTH'
                     AND user_id = '{ user_id }' 
+                    { sub_sql }
             )
         SELECT 'last_first' _session, COALESCE(SUM(records.last_first), 0)::INT AS records FROM ( 
             SELECT count(date) as last_first FROM msgs
