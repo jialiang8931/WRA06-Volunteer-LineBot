@@ -1,6 +1,6 @@
 from lambda_function import handler
 from components import line_bot_api
-
+import traceback
 
 from utils.utils_common import get_event_info
 from utils.utils_common import get_user_info
@@ -318,6 +318,7 @@ def handle_message(event):
 
     except Exception as e:
         msg = "個人問答錯誤:" + user_msg + "\n" +str(e)
+        msg += "\n" + str(traceback.format_exc())
         linebot_send_text(event.reply_token, msg)
         return
 

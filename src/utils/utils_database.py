@@ -274,7 +274,7 @@ def update_admin_post_record(v_id: str, datetime_str: str = "2023-02-16T12:00:12
             , datetime = TIMESTAMP '{ datetime_str }'
             , date = TIMESTAMP '{ datetime_str }'
             , "time" = TIMESTAMP '{ datetime_str }'
-            , session = ' { session } '
+            , session = '{ session }'
         WHERE datetime IN (SELECT datetime FROM manager_upload_imgs)
             AND user_id IN (SELECT user_id FROM manager_ids)
         ;
