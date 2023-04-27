@@ -1,6 +1,5 @@
-
 from typing import List, Dict
-from components import setting 
+from constants import setting 
 import datetime
 import urllib.parse
 from utils import create_squad_patrol_image_and_thumbnail

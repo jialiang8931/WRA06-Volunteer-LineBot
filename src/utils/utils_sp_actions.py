@@ -1,6 +1,6 @@
-from components.do_transaction_pg import do_transaction_command_manage, get_dict_data_from_database
+from utils.do_transaction_pg import do_transaction_command_manage, get_dict_data_from_database
 from components import line_bot_api
-from components import setting 
+from constants import setting 
 
 
 def get_user_infos():

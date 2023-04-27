@@ -1,6 +1,6 @@
 from typing import List, Dict
-from components.do_transaction_pg import do_transaction_command_manage, get_dict_data_from_database
-from components import setting 
+from utils.do_transaction_pg import do_transaction_command_manage, get_dict_data_from_database
+from constants import setting 
 import datetime
 
 

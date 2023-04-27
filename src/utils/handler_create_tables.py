@@ -1,5 +1,5 @@
-from components import do_transaction_pg
-from components import setting 
+from utils import do_transaction_pg
+from constants import setting 
 
 def create_relevant_tables() -> dict:
     sql = f"""
