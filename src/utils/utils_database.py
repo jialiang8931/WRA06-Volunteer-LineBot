@@ -129,7 +129,6 @@ def insert_user_post_msg(event_info: Dict):
             ;
     '''
     try:
-        print(sql_string)
         do_transaction_command_manage(config_db=setting.config_db, sql_string=sql_string)
         return {"status": True, "detail": "Insert user msg already."}
     except Exception as e:

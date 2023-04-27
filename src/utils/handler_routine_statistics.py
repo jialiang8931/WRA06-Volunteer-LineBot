@@ -32,9 +32,9 @@ def get_routine_personal_patrol_record_by_month(org: str = setting.org, month: s
     event_sql_string = '\n'.join(event_sql_strings)
 
     # 處理二月分統計之部分
-    h2_sql_string = """EXTRACT(DAY FROM date) >= 16 AND EXTRACT(DAY FROM date) <= 30"""
-    # if is_February:
-    #     h2_sql_string = f"""EXTRACT(DAY FROM date) >= EXTRACT(DAY FROM DATE '{ month_begin_string }' + INTERVAL '1' MONTH - INTERVAL '1' DAY) - 4 AND EXTRACT(DAY FROM date) <= EXTRACT(DAY FROM DATE '{ month_begin_string }' + INTERVAL '1' MONTH - INTERVAL '1' DAY)"""
+    h2_sql_string = """EXTRACT(DAY FROM date) >= 25 AND EXTRACT(DAY FROM date) <= 30"""
+    if is_February:
+        h2_sql_string = f"""EXTRACT(DAY FROM date) >= EXTRACT(DAY FROM DATE '{ month_begin_string }' + INTERVAL '1' MONTH - INTERVAL '1' DAY) - 4 AND EXTRACT(DAY FROM date) <= EXTRACT(DAY FROM DATE '{ month_begin_string }' + INTERVAL '1' MONTH - INTERVAL '1' DAY)"""
 
     # 取得當月日常通報統計
     sql_string = f"""
@@ -90,7 +90,7 @@ def get_routine_personal_patrol_record_by_month(org: str = setting.org, month: s
 
             ori_msg_stat_h1 AS (
                 SELECT group_id, user_id, COUNT(*)/COUNT(*) AS count FROM ori_msgs
-                WHERE EXTRACT(DAY FROM datetime) >= 1 AND EXTRACT(DAY FROM datetime) <= 15
+                WHERE EXTRACT(DAY FROM datetime) >= 11 AND EXTRACT(DAY FROM datetime) <= 15
                 GROUP BY group_id, user_id
             ),
 
