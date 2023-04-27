@@ -36,7 +36,7 @@ def handle_message(event):
         key = f"""images/records/{ event_info["group_id"] }/{ event_info["user_id"] }/{ month_string }/{ event_info["msg_id"] }.jpg"""
 
         try:
-            s3.upload_fileobj(file_obj, setting.bucket, key)
+            s3.put_object(Body=file_obj, Bucket=setting.bucket, Key=key, ContentType="image/jpg")
             event_info.update({"content": key})
             utils_database.insert_user_post_msg(event_info)
         except Exception as e:
