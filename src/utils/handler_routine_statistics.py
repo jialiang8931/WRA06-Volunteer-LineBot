@@ -304,54 +304,53 @@ def get_routine_regional_patrol_record_by_month(org: str = setting.org, month: s
 
 def get_personal_recent_2month_record(user_id = 'U92dd2242c916770f89c413845311bbe2'):
     sql_string = f'''
-        SELECT 'last_first' _session, coalesce(SUM(records.last_first), 0)::INT AS records FROM ( 
-            SELECT count(date) as last_first FROM volunteer.v_msgs 
-            WHERE user_id = '{ user_id }' 
-                AND date BETWEEN DATE_TRUNC('month', CURRENT_DATE) - interval '1 month' AND 
-                            DATE_TRUNC('month', CURRENT_DATE) - interval '1 month' + interval '14 day'
-                AND msg_type = 'image'
+        WITH 
+            msgs AS (
+                SELECT * FROM volunteer.v_msgs 
+                WHERE msg_type = 'image'
+                    AND datetime > CURRENT_DATE - INTERVAL '2 MONTH'
+                    AND user_id = '{ user_id }' 
+            )
+        SELECT 'last_first' _session, COALESCE(SUM(records.last_first), 0)::INT AS records FROM ( 
+            SELECT count(date) as last_first FROM msgs
+            WHERE date BETWEEN DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month' + INTERVAL '10 DAY' AND 
+                            DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month' + INTERVAL '15 day'
             GROUP BY date 
         ) records 
 
         UNION
-        SELECT 'last_second' _session, coalesce(SUM(records.last_second), 0)::INT AS records FROM ( 
-            SELECT count(date) as last_second FROM volunteer.v_msgs 
-            WHERE user_id = '{ user_id }' 
-                AND date BETWEEN DATE_TRUNC('month', CURRENT_DATE) - interval '1 month' + interval '15 day' AND 
-                            DATE_TRUNC('month', CURRENT_DATE) - interval '1 day'
-                AND msg_type = 'image'
+        SELECT 'last_second' _session, COALESCE(SUM(records.last_second), 0)::INT AS records FROM ( 
+            SELECT count(date) as last_second FROM msgs
+            WHERE date BETWEEN DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month' + INTERVAL '24 day' AND 
+                            DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month' + INTERVAL '31 day'
             GROUP BY date 
         ) records
 
         UNION
-        SELECT 'current_first' _session, coalesce(SUM(records.current_first), 0)::INT AS records FROM ( 
-            SELECT count(date) as current_first FROM volunteer.v_msgs 
-            WHERE user_id = '{ user_id }' 
-                AND date BETWEEN DATE_TRUNC('month', CURRENT_DATE) AND 
-                            DATE_TRUNC('month', CURRENT_DATE) + interval '14 day'
-                AND msg_type = 'image'
+        SELECT 'current_first' _session, COALESCE(SUM(records.current_first), 0)::INT AS records FROM ( 
+            SELECT count(date) as current_first FROM msgs
+            WHERE date BETWEEN DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '10 DAY' AND 
+                            DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '15 day'
             GROUP BY date 
         ) records 
 
         UNION
-        SELECT 'current_second' _session, coalesce(SUM(records.current_second), 0)::INT AS records FROM ( 
-            SELECT count(date) as current_second FROM volunteer.v_msgs 
-            WHERE user_id = '{ user_id }' 
-                AND date BETWEEN DATE_TRUNC('month', CURRENT_DATE) + interval '15 day' AND 
-                            DATE_TRUNC('month', CURRENT_DATE) + interval '1 month - 1 day'
-                AND msg_type = 'image'
+        SELECT 'current_second' _session, COALESCE(SUM(records.current_second), 0)::INT AS records FROM ( 
+            SELECT count(date) as current_second FROM msgs
+            WHERE date BETWEEN DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '24 DAY' AND 
+                            DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '31 day'
             GROUP BY date 
         ) records 
 
-        ORDER BY _session DESC
+        ORDER BY _session DESC;
     '''
 
     update_sql_string = f'''
         (SELECT 'last_first' _session, MAX(datetime), content::INT AS records FROM ( 
             SELECT datetime, content FROM volunteer.v_msgs 
             WHERE user_id = '{ user_id }'
-                AND date BETWEEN DATE_TRUNC('month', CURRENT_DATE) - interval '1 month' AND 
-                            DATE_TRUNC('month', CURRENT_DATE) - interval '1 month' + interval '14 day'
+                AND date BETWEEN DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month' AND 
+                            DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month' + INTERVAL '14 day'
                 AND msg_type = 'update'
         ) records 
         GROUP BY datetime, content)
@@ -360,8 +359,8 @@ def get_personal_recent_2month_record(user_id = 'U92dd2242c916770f89c413845311bb
         SELECT 'last_second' _session, MAX(datetime), content::INT AS records FROM ( 
             SELECT datetime, content FROM volunteer.v_msgs 
             WHERE user_id = '{ user_id }'
-                AND date BETWEEN DATE_TRUNC('month', CURRENT_DATE) - interval '1 month' + interval '15 day' AND 
-                            DATE_TRUNC('month', CURRENT_DATE) - interval '1 day'
+                AND date BETWEEN DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month' + INTERVAL '15 day' AND 
+                            DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 day'
                 AND msg_type = 'update'
         ) records 
         GROUP BY datetime, content)
@@ -371,7 +370,7 @@ def get_personal_recent_2month_record(user_id = 'U92dd2242c916770f89c413845311bb
             SELECT datetime, content FROM volunteer.v_msgs 
             WHERE user_id = '{ user_id }'
                 AND date BETWEEN DATE_TRUNC('month', CURRENT_DATE) AND 
-                            DATE_TRUNC('month', CURRENT_DATE) + interval '14 day'
+                            DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '14 day'
                 AND msg_type = 'update'
         ) records 
         GROUP BY datetime, content )
@@ -380,8 +379,8 @@ def get_personal_recent_2month_record(user_id = 'U92dd2242c916770f89c413845311bb
         SELECT 'current_second' _session, MAX(datetime), content::INT AS records FROM ( 
             SELECT datetime, content FROM volunteer.v_msgs 
             WHERE user_id = '{ user_id }'
-                AND date BETWEEN DATE_TRUNC('month', CURRENT_DATE) + interval '15 day' AND 
-                            DATE_TRUNC('month', CURRENT_DATE) + interval '1 month - 1 day'
+                AND date BETWEEN DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '15 day' AND 
+                            DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month - 1 day'
                 AND msg_type = 'update'
         ) records 
         GROUP BY datetime, content)
