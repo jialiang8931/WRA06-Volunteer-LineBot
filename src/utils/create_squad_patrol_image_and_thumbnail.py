@@ -27,6 +27,7 @@ def get_squad_patrol_record_by_name(target_squad_name: str, current_month_str: s
         }
     # 2022-11-28 修正錯誤
     records = [get_volunteer_metadata(volunteer) for volunteer in (records_current if len(records_current) <= len(records_last) else records_last)]
+    records = sorted(records, key=lambda x: x["v_id"])
 
     for i in range(0, len(records)):
         last_up = 1 if records_last[i]["first_half"] > 0 else 0
