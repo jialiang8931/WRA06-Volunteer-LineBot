@@ -55,7 +55,7 @@ def handle_member_joined(event):
     except Exception as e:
         print(e)
         
-    msg = f'嗨，{ display_name }\n歡迎您加入志工通報群組，本群組會收納所有您提供的通報訊息與照片，敬請避免在本群組聊天、傳送問候圖，感謝您的配合與諒解，也謝謝您熱心協助！'
+    msg = f'嗨，{ display_name }\n歡迎加入【防汛護水志工第六大隊颱風豪雨事件通報】，麻煩您輸入您的志工編號，方便老六紀錄您的通報結果哦！本群組會收納所有您提供的通報訊息與照片，敬請避免在本群組聊天、傳送問候圖，感謝您的配合與諒解，也謝謝您熱心協助！'
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=msg))
     
 

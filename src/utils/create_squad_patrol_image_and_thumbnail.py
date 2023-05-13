@@ -15,7 +15,9 @@ def get_squad_patrol_record_by_name(target_squad_name: str, current_month_str: s
     
     records_last = list(filter(lambda x: x["squad"] == target_squad_name, res1))
     records_current = list(filter(lambda x: x["squad"] == target_squad_name, res2))
-    
+    records_last= sorted(records_last, key=lambda x: x["v_id"])
+    records_current= sorted(records_current, key=lambda x: x["v_id"])
+
     def get_volunteer_metadata(volunteer):
         return {
             "v_id": volunteer["v_id"],
