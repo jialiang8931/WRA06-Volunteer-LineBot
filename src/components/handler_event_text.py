@@ -25,7 +25,7 @@ def handle_message(event):
     v_character = utils_database.get_user_position_by_user_id(user_id=event_info["user_id"])
     
     is_admin = True if v_character in ("管理者", "管理員") else False
-    is_higher_user_right = True if v_character in ("承辦", "顧問") else False
+    is_higher_user_right = True if v_character in ("承辦", "顧問", "隊員,顧問") else False
     is_team_leader = True if v_character in ("分隊長", "大隊長", "隊長") else False
     is_normal_user = True if v_character in ("隊員") else False
 
