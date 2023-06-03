@@ -2,6 +2,7 @@ from typing import List, Dict
 from utils.do_transaction_pg import do_transaction_command_manage, get_dict_data_from_database
 from constants import setting 
 import datetime
+import requests
 
 
 def get_recent_rainfalls():
@@ -54,6 +55,17 @@ def get_rainfall_event_by_id(rainfall_event_id: int):
             msg += f"""\n開始時間: { _data["datetime_begin"] }"""
             msg += f"""\n結束時間: { _data["datetime_end"] }"""
             msg += f"""\n事件備註: { _data["note"] }"""
+        try:
+            stat_msg_personal = get_event_statistics_by_id(event_id=3, stat_type="personal")
+            stat_msg_regional = get_event_statistics_by_id(event_id=3, stat_type="regional")
+            msg += f"""\n事件統計數字:"""
+            msg += f"""\n{ stat_msg_personal }"""
+            msg += f"""\n{ stat_msg_regional }"""
+        except:
+            msg += f"""\n無統計資料"""
+        finally:
+            pass
+
         msg = msg if msg != "" else "無此豪雨事件資料"
         return {
             "status": True,
@@ -129,3 +141,19 @@ def create_rainfall_event_by_title(title):
     except Exception as e:
         return {"status": False, "detail": f"錯誤: { str(e) }"}
         
+
+def get_event_statistics_by_id(event_id = 3, stat_type = "personal"):
+    ref_msg_dict = {
+        "personal": "已出動人數/全部志工數",
+        "regional": "已巡區域數/總巡檢區域數"
+    }
+    
+    url = f"https://wra06-volunteer.aws-gov.org/event/statistics/{ stat_type }?event_id={ event_id }"
+    response = requests.get(url)
+    data = response.json()
+    data_regional = data["data"]
+    data_regional_total = len(data_regional)
+    data_regional_patroled = [region for region in data_regional if region["total_hour"] > 0]
+    regional_count = len(data_regional_patroled)
+    stat_msg = f"-> { ref_msg_dict[stat_type] }: { regional_count }/{ data_regional_total }"
+    return stat_msg
