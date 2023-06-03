@@ -56,8 +56,8 @@ def get_rainfall_event_by_id(rainfall_event_id: int):
             msg += f"""\n結束時間: { _data["datetime_end"] }"""
             msg += f"""\n事件備註: { _data["note"] }"""
         try:
-            stat_msg_personal = get_event_statistics_by_id(event_id=3, stat_type="personal")
-            stat_msg_regional = get_event_statistics_by_id(event_id=3, stat_type="regional")
+            stat_msg_personal = get_event_statistics_by_id(event_id=rainfall_event_id, stat_type="personal")
+            stat_msg_regional = get_event_statistics_by_id(event_id=rainfall_event_id, stat_type="regional")
             msg += f"""\n事件統計數字:"""
             msg += f"""\n{ stat_msg_personal }"""
             msg += f"""\n{ stat_msg_regional }"""
