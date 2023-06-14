@@ -108,7 +108,7 @@ def handle_message(event):
         # 列出尚未允許的群組
         if is_admin and is_user_msg and user_msg == "未允許收納的群組":
             status_update_group_name = update_group_name()
-            msg = utils_database.get_target_allowance_group(allowance='false')
+            msg = utils_database._target_allowance_group(allowance='false')
             linebot_send_text(event.reply_token, msg)
             return
 

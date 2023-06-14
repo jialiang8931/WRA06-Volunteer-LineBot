@@ -144,16 +144,24 @@ def create_rainfall_event_by_title(title):
 
 def get_event_statistics_by_id(event_id = 3, stat_type = "personal"):
     ref_msg_dict = {
-        "personal": "已出動人數/全部志工數",
-        "regional": "已巡區域數/總巡檢區域數"
+        "personal": "已出動人次/已出動人數/全部志工數",
+        "regional": "區域通報次數/已巡區域數/總巡檢區域數"
     }
-    
-    url = f"https://wra06-volunteer.aws-gov.org/event/statistics/{ stat_type }?event_id={ event_id }"
+
+    url = f"https://wra06-volunteer.aws-gov.org/event/statistics/{ stat_type }?event_id={ event_id }&is_array_format=true"
     response = requests.get(url)
     data = response.json()
     data_regional = data["data"]
     data_regional_total = len(data_regional)
-    data_regional_patroled = [region for region in data_regional if region["total_hour"] > 0]
-    regional_count = len(data_regional_patroled)
-    stat_msg = f"-> { ref_msg_dict[stat_type] }: { regional_count }/{ data_regional_total }"
+    data_regional_patrolled = [region for region in data_regional if region["total_hour"] > 0]
+
+    regional_patrolled_count = 0
+    for row in data_regional:
+        for record in row["record"]:
+            A = record["record"]["A"]
+            P = record["record"]["P"]
+            regional_patrolled_count = regional_patrolled_count + A + P
+            
+    regional_count = len(data_regional_patrolled)
+    stat_msg = f"-> { ref_msg_dict[stat_type] }: { regional_patrolled_count }/{ regional_count }/{ data_regional_total }"
     return stat_msg
