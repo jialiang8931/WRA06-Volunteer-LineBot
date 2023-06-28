@@ -11,6 +11,8 @@ from utils import utils_rainfall_event
 from utils import utils_sp_actions
 from utils.utils_reply_images import get_squad_patrol_record_msg_or_img
 from utils import handler_routine_statistics
+from utils import utils_annual_statistics
+
 
 from linebot.models import (
     MessageEvent, 
@@ -289,6 +291,12 @@ def handle_message(event):
         if is_user_msg and user_msg == "個人通報查詢":
             msg = utils_database.get_patrol_records_by_user_id(event_info["user_id"])
             linebot_send_text(event.reply_token, msg)
+            return
+
+        # 2023-06-28 先做畫面
+        if is_user_msg and user_msg == "年度時數統計":
+            flex_message = utils_annual_statistics.get_annual_statistic_flex_message()
+            line_bot_api.reply_message(event.reply_token, flex_message)
             return
 
         if is_user_msg and user_msg == "近兩個月志工時數統計":
