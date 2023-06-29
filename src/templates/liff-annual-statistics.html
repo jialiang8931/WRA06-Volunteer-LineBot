@@ -13,15 +13,37 @@
 
 <body>
     <div id="app">
-        <h1>第六河川局-防汛志工年度統計</h1>
-        <h2>{{ profile.displayName }} 先進好，以下是您於{{ year }}年通報之時數統計</h2>
-        <ul>
-            <li v-for="row of statisticsData.data" :key="row.month">
-                【{{ row.month }}】 日常: {{ row.routine }}小時; 事件: {{ row.event }}小時; 共計: {{ row.total }}小時
-            </li>
-        </ul>
+        <h2>防汛志工年度統計</h2>
 
-        <h2>總通報時數為: {{ totalHour }}小時</h2>
+        <h3>{{ profile.displayName }} 先進好，以下是您於{{ year }}年通報之時數統計</h3>
+
+        <div style="display: flex; justify-content: center;">
+            <table style="width: 90%; text-align:center;">
+                <colgroup>
+                    <col style="background-color: lightblue;">
+                    <col span="2" style="background-color: lightgreen;">
+                    <col style="background-color: lightblue;">
+                </colgroup>
+                <thead style="background-color: lightblue;">
+                    <tr>
+                        <th>月份</th>
+                        <th>日常通報</th>
+                        <th>事件通報</th>
+                        <th>總時數</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="row of statisticsData.data" :key="row.month">
+                        <td>{{ row.month }}</td>
+                        <td>{{ row.routine }}</td>
+                        <td>{{ row.event }}</td>
+                        <td>{{ row.total }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>總通報時數為: {{ totalHour }}小時</h3>
     </div>
 
 
