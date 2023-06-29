@@ -52,7 +52,7 @@
                     try {
                         await liff.init({
                             liffId: liffId,
-                            withLoginOnExternalBrowser: true
+                            withLoginOnExternalBrowser: false
                         });
                         profile.value = await liff.getProfile()
                     } catch (error) {
