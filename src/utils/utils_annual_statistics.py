@@ -1,7 +1,7 @@
 from linebot.models import FlexSendMessage
 
 
-def get_annual_statistic_flex_message():
+def get_annual_statistic_flex_message(user_id):
     flex_message = FlexSendMessage(
         alt_text = "防汛志工年度通報統計",
         contents = {
@@ -35,7 +35,7 @@ def get_annual_statistic_flex_message():
                 "action": {
                   "type": "uri",
                   "label": "民國112年 西元2023年",
-                  "uri": "https://liff.line.me/2000002087-w65yOOAG/?year=2023",
+                  "uri": f"https://liff.line.me/2000002087-w65yOOAG/?year=2023&userId={ user_id }",
                   "altUri": {
                     "desktop": "https://www.google.com/maps"
                   }
@@ -52,7 +52,7 @@ def get_annual_statistic_flex_message():
                 "action": {
                   "type": "uri",
                   "label": "民國113年 西元2024年",
-                  "uri": "https://liff.line.me/2000002087-w65yOOAG/?year=2024",
+                  "uri": f"https://liff.line.me/2000002087-w65yOOAG/?year=2024&userId={ user_id }",
                   "altUri": {
                     "desktop": "https://www.google.com/maps"
                   }
