@@ -35,9 +35,9 @@ def get_annual_statistic_flex_message():
                 "action": {
                   "type": "uri",
                   "label": "民國112年 西元2023年",
-                  "uri": "http://linecorp.com/",
+                  "uri": "https://liff.line.me/2000002087-w65yOOAG/?year=2023",
                   "altUri": {
-                    "desktop": "https://wra06-volunteer.aws-gov.org/docs"
+                    "desktop": "https://www.google.com/maps"
                   }
                 },
                 "height": "sm",
@@ -52,7 +52,7 @@ def get_annual_statistic_flex_message():
                 "action": {
                   "type": "uri",
                   "label": "民國113年 西元2024年",
-                  "uri": "http://linecorp.com/",
+                  "uri": "https://liff.line.me/2000002087-w65yOOAG/?year=2024",
                   "altUri": {
                     "desktop": "https://www.google.com/maps"
                   }
