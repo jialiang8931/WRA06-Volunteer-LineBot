@@ -14,7 +14,7 @@
 <body>
     <div id="app">
 
-        <div v-show="!isAdmin">
+        <div v-show="isAdmin">
     
             <label for="fruit">選擇分隊：</label>
             <select v-model="selectedSquad" id="fruit" v-on:change="getSquadMembers">
