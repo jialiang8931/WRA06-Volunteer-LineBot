@@ -109,6 +109,14 @@
                     }
                 })
 
+                const checkIsAdmin = async(userId) => {
+                    const url = `${ TLD }/validation/check_is_admin?user_id=${ userId }`
+                    const response = await axios.get(url)
+                    console.log('是否為：', response.data)
+                    isAdmin.value = response.data
+                }
+
+
                 const initLIFF = async() => {
                     try {
                         await liff.init({
@@ -117,18 +125,15 @@
                         });
                         profile.value = await liff.getProfile()
                         targetUserName.value = isAdmin.value ? profile.value.displayName.replace(/^(.{1})./, "$1O") : profile.value.displayName
+                        targetUserId.value = profile.value.userId
+                        checkIsAdmin(profile.value.userId)
+
                     } catch (error) {
                         console.error(error);
                     }
+                    
                 }
 
-
-                const checkIsAdmin = async() => {
-                    const userId = profile.value.userId
-                    const url = `${ TLD }/validation/check_is_admin??user_id=${ userId }`
-                    const response = await axios.get(url)
-                    isAdmin.value = response.data
-                }
 
                 const getStatisticData = async() => {
                     const userId = profile.value.userId
