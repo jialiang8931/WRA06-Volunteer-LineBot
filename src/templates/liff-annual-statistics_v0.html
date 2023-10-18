@@ -13,37 +13,9 @@
 
 <body>
     <div id="app">
-
-        <div v-show="!isAdmin">
-    
-            <label for="fruit">選擇分隊：</label>
-            <select v-model="selectedSquad" id="fruit" v-on:change="getSquadMembers">
-                <option 
-                    v-for="squad of squadInfo" 
-                    v-bind:value="squad.squad" 
-                >
-                {{ squad.squad }}
-
-                </option>
-            </select>
-
-            <select id="members" v-model="targetUserId" v-on:change="changeUserName($event)">
-                <option v-for="member of squadMembers" 
-                        v-bind:value="member.user_id"
-                        
-                >
-                        
-            {{ member.v_id }} {{ member.v_name.replace(/^(.{1})./, "$1O") }}</option>
-            </select>
-
-            <p>你選擇了：{{ selectedSquad }} {{ targetUserName }} {{ targetUserId }}</p>
-        </div>
-
-
-
         <h2>防汛志工-{{ year }}年度個人時數統計</h2>
 
-        <h3>{{ targetUserName }} 先進好，以下是您的通報時數</h3>
+        <h3>{{ profile.displayName }} 先進好，以下是您的通報時數</h3>
 
         <div style="display: flex; justify-content: center;">
             <table style="width: 90%; text-align:center;">
@@ -89,12 +61,6 @@
                 const TLD = "https://wra06-volunteer.aws-gov.org"
                 const profile = ref({})
                 const totalHour = ref(0)
-                const isAdmin = ref(false)
-                const squadInfo = ref([])
-                const selectedSquad = ref('')
-                const squadMembers = ref([])
-                const targetUserName = ref('')
-                const targetUserId = ref('')
                 const statisticsData = ref({
                     data: {
                         month: '01',
@@ -111,18 +77,9 @@
                             withLoginOnExternalBrowser: true
                         });
                         profile.value = await liff.getProfile()
-                        targetUserName.value = isAdmin.value ? profile.value.displayName.replace(/^(.{1})./, "$1O") : profile.value.displayName
                     } catch (error) {
                         console.error(error);
                     }
-                }
-
-
-                const checkIsAdmin = async() => {
-                    const userId = profile.value.userId
-                    const url = `${ TLD }/validation/check_is_admin??user_id=${ userId }`
-                    const response = await axios.get(url)
-                    isAdmin.value = response.data
                 }
 
                 const getStatisticData = async() => {
@@ -133,52 +90,14 @@
                     totalHour.value = statisticsData.value.data.reduce((acc, row) => acc + row.total, 0)
                 }
 
-                const getSquadInfo = async() => {
-                    const userId = profile.value.userId
-                    const url = `${ TLD }/squad/info`
-                    const response = await axios.get(url)
-                    squadInfo.value = response.data
-                }
-
-                const getSquadMembers = ()=> {
-                    const members = squadInfo.value.filter(squad => {
-                            targetUserName.value = ''
-                            targetUserId.value = ''
-                            return squad.squad === selectedSquad.value
-                        }
-                    )
-                    squadMembers.value = members.length ? members[0].data : []
-                }
-
-                const changeUserName = async function(event){
-                    const eventUserId = event.target.value
-                    const targetUser = squadMembers.value.filter(member => member.user_id === eventUserId)
-                    targetUserName.value = members.length ? targetUser[0].v_name.replace(/^(.{1})./, "$1O") : '查無此人'
-
-                    const url = `${ TLD }/annual/statistics/${ year }?user_id=${ eventUserId }`
-                    const response = await axios.get(url)
-                    statisticsData.value = response.data
-                    totalHour.value = statisticsData.value.data.reduce((acc, row) => acc + row.total, 0)
-                }
-
                 initLIFF()
-                checkIsAdmin()
-                getSquadInfo()
                 getStatisticData()
 
                 return {
                     year,
                     profile,
                     statisticsData,
-                    totalHour,
-                    isAdmin, 
-                    squadInfo,
-                    selectedSquad,
-                    getSquadMembers,
-                    squadMembers,
-                    targetUserName,
-                    targetUserId,
-                    changeUserName
+                    totalHour
                 }
             }
         }).mount('#app')
