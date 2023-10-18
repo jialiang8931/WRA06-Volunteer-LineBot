@@ -35,7 +35,7 @@ def get_annual_statistic_flex_message(user_id):
                 "action": {
                   "type": "uri",
                   "label": "民國112年 西元2023年",
-                  "uri": "https://liff.line.me/2000002087-w65yOOAG/?year=2023",
+                  "uri": f"https://liff.line.me/2000002087-w65yOOAG/?year=2023&user_id={ user_id }",
                   "altUri": {
                     "desktop": "https://www.google.com/maps"
                   }
@@ -52,7 +52,7 @@ def get_annual_statistic_flex_message(user_id):
                 "action": {
                   "type": "uri",
                   "label": "民國113年 西元2024年",
-                  "uri": "https://liff.line.me/2000002087-w65yOOAG/?year=2024",
+                  "uri": f"https://liff.line.me/2000002087-w65yOOAG/?year=2024&user_id={ user_id }",
                   "altUri": {
                     "desktop": "https://www.google.com/maps"
                   }

@@ -295,7 +295,7 @@ def handle_message(event):
 
         # 2023-06-28 先做畫面
         if is_user_msg and user_msg == "年度時數統計":
-            flex_message = utils_annual_statistics.get_annual_statistic_flex_message()
+            flex_message = utils_annual_statistics.get_annual_statistic_flex_message(user_id=event_info["user_id"])
             line_bot_api.reply_message(event.reply_token, flex_message)
             return
 
