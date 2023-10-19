@@ -1,0 +1,73 @@
+{
+    "size": {
+        "width": 2500,
+        "height": 843
+    },
+    "selected": true,
+    "name": "圖文選單 1",
+    "chatBarText": "查看更多資訊",
+    "areas": [{
+            "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 830,
+                "height": 420
+            },
+            "action": {
+                "type": "uri",
+                "label": "高公局即時影像",
+                "uri": "https://1968.freeway.gov.tw/roadcctv"
+            }
+        },
+        {
+            "bounds": {
+                "x": 0,
+                "y": 420,
+                "width": 830,
+                "height": 423
+            },
+            "action": {
+                "type": "uri",
+                "label": "氣象署降雨雷達",
+                "uri": "https://www.cwa.gov.tw/V8/C/W/OBS_Radar_rain.html"
+            }
+        },
+        {
+            "bounds": {
+                "x": 830,
+                "y": 0,
+                "width": 840,
+                "height": 843
+            },
+            "action": {
+                "type": "uri",
+                "label": "交通部氣象署網站",
+                "uri": "https://www.cwa.gov.tw/V8/C/"
+            }
+        },
+        {
+            "bounds": {
+                "x": 1670,
+                "y": 0,
+                "width": 830,
+                "height": 640
+            },
+            "action": {
+                "type": "message",
+                "text": "訂閱示警推播"
+            }
+        },
+        {
+            "bounds": {
+                "x": 1670,
+                "y": 640,
+                "width": 830,
+                "height": 203
+            },
+            "action": {
+                "type": "message",
+                "text": "取消訂閱"
+            }
+        }
+    ]
+}
