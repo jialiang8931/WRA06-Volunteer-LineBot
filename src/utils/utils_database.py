@@ -385,7 +385,7 @@ def get_squad_name_by_user_id(user_id: str):
                 WHERE EXISTS (
                     SELECT 1 FROM v_ingroup_v_id
                     WHERE v_ingroup_v_id.v_id = volunteer.v_list.v_id
-                        AND volunteer.v_list.year = 2023
+                        AND volunteer.v_list.year = 2024
                 )
             )
         SELECT * FROM v_squad LIMIT 1
