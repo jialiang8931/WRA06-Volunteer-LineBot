@@ -352,9 +352,9 @@ def get_user_position_by_user_id(user_id: str):
             v_list_character AS (
                 SELECT v_character FROM volunteer.v_list
                 WHERE v_id IN (SELECT * FROM ingroup_v_id)
-                AND year = EXTRACT(YEAR FROM NOW()) -- 每年要做一次更新處理
+                AND year IN (EXTRACT(YEAR FROM NOW())-1, EXTRACT(YEAR FROM NOW()))  -- 每年要做一次更新處理
             )            
-        SELECT * FROM v_list_character LIMIT 1;
+        SELECT * FROM v_list_character ORDER BY year DESC LIMIT 1;
     """
     data = get_dict_data_from_database(config_db=setting.config_db, sql_string=sql_string)
     v_character = data[0]["v_character"] if len(data) > 0 else "一般使用者"
