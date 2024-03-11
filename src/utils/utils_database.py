@@ -352,7 +352,7 @@ def get_user_position_by_user_id(user_id: str):
             v_list_character AS (
                 SELECT v_character FROM volunteer.v_list
                 WHERE v_id IN (SELECT * FROM ingroup_v_id)
-                AND year = 2023
+                AND year = EXTRACT(YEAR FROM NOW()) -- 每年要做一次更新處理
             )            
         SELECT * FROM v_list_character LIMIT 1;
     """
